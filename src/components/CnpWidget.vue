@@ -30,14 +30,12 @@ const brands = computed(() => {
  * add the script tag into the DOM
  */
 onMounted(() => {
-  console.log(`the component is now mounted.`)
-  console.info(brands.value)
+  console.info(`Selected brands: ${brands.value}`)
 })
 </script>
 
 <template>
   <div class="mt-2">
-    <form action="https://docs.oppwa.com/tutorials/integration-guide" class="paymentWidgets"
-      data-brands="VISA MASTER AMEX"></form>
+    <form action="https://docs.oppwa.com/tutorials/integration-guide" class="paymentWidgets" :data-brands="brands"></form>
   </div>
 </template>

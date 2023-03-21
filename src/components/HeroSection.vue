@@ -1,5 +1,5 @@
 <template>
-  <section class="container mx-auto p-10">
+  <section class="container mx-auto px-10 pt-10">
     <h1 class="text-3xl font-bold text-teal-600">
       CopyandPay Playground
     </h1>

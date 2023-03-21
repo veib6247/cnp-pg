@@ -20,6 +20,13 @@ const isLaunchWidget = ref(false)
  * 
  */
 function sumbit() {
+  if (checkoutId.value == '') {
+    alert('Checkout ID cannot be empty!')
+  } else {
+    // todo: create script tag then append to head
+
+  }
+
   // eval
   isLaunchWidget.value = checkoutId.value !== '' ? true : false
 }
@@ -52,8 +59,8 @@ function reset() {
     <UserTextArea label="Javascript" v-model="customJs" />
 
     <div class="flex flex-row gap-2">
-      <SubmitButton :show-icon="true" btn-label="Launch Widget" @submit-data="sumbit" />
-      <SubmitButton :show-icon="false" btn-label="Reset" @submit-data="reset" />
+      <SubmitButton :show-icon="true" btn-label="Launch the Widgy!" @submit-data="sumbit" />
+      <SubmitButton :show-icon="false" btn-label="Yeet the Widgy!" @submit-data="reset" />
     </div>
 
 
