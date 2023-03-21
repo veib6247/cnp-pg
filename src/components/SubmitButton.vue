@@ -16,8 +16,6 @@ defineProps({
 defineEmits(['submitData'])
 </script>
 
-
-
 <template>
   <div class="mt-2">
     <button

@@ -18,7 +18,6 @@ defineProps({
 defineEmits(['update:modelValue'])
 </script>
 
-
 <template>
   <div class="mt-2">
     <label class="block font-semibold">{{ label }}</label>
