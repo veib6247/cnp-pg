@@ -24,7 +24,11 @@ function sumbit() {
     alert('Checkout ID cannot be empty!')
   } else {
     // todo: create script tag then append to head
+    const scriptTag = document.createElement('script')
+    scriptTag.setAttribute('id', 'widgy-boi')
+    scriptTag.setAttribute('src', `https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${checkoutId.value}`)
 
+    document.head.append(scriptTag)
   }
 
   // eval
@@ -62,8 +66,6 @@ function reset() {
       <SubmitButton :show-icon="true" btn-label="Launch the Widgy!" @submit-data="sumbit" />
       <SubmitButton :show-icon="false" btn-label="Yeet the Widgy!" @submit-data="reset" />
     </div>
-
-
 
     <CnpWidget :checkout-id="checkoutId" :brand-list="selectedBrands" v-if="isLaunchWidget" />
   </section>
