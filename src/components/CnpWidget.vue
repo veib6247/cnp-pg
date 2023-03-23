@@ -35,7 +35,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-2">
+  <div class="mt-10">
     <form action="https://docs.oppwa.com/tutorials/integration-guide" class="paymentWidgets" :data-brands="brands"></form>
   </div>
 </template>

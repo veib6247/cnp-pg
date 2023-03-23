@@ -43,7 +43,7 @@ function reset() {
 <template>
   <HeroSection />
 
-  <section class="container mx-auto p-10">
+  <section class="container mx-auto bg-white p-10 rounded-2xl shadow-lg">
     <!-- get checkout ID from user -->
     <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay." v-model="checkoutId" />
 
