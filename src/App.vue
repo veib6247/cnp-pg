@@ -51,7 +51,7 @@ function reset() {
     <div class="mt-2">
       <label class="block font-semibold">Brands</label>
       <select
-        class="mt-1 block font-mono w-full rounded border-gray-300 shadow-sm focus:border-sky-300 focus:ring focus:ring-sky-300 focus:ring-opacity-30"
+        class="mt-1 block font-mono w-full rounded border-gray-300 shadow-sm transition focus:border-sky-300 focus:ring focus:ring-sky-300 focus:ring-opacity-30"
         size="6" v-model="selectedBrands" multiple>
         <option v-for="card in brands.cards" :key="card">{{ card }}</option>
         <option v-for="bank in brands.bank" :key="bank">{{ bank }}</option>

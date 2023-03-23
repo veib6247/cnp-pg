@@ -19,7 +19,7 @@ defineEmits(['submitData'])
 <template>
   <div class="mt-2">
     <button
-      class="bg-teal-600 h-14 py-3 px-5 rounded-md font-bold text-slate-50 hover:bg-teal-500 active:scale-95 space-x-2 transition"
+      class="bg-teal-600 h-14 py-3 px-5 rounded-md font-bold text-slate-50 transition hover:bg-teal-500  active:scale-95 space-x-2"
       @click="$emit('submitData')">
       <LaunchIcon v-if="showIcon" />
       <span>
