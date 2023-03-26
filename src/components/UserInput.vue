@@ -19,11 +19,14 @@ defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <div class="mt-2">
-    <label class="block font-semibold">{{ label }}</label>
+  <div>
+    <label class="block font-bold text-xl text-accent">{{ label }}</label>
+
     <input type="text"
-      class="mt-1 p-3 block font-mono w-full rounded border-gray-300 shadow-sm transition focus:border-sky-300 focus:ring focus:ring-sky-300 focus:ring-opacity-30"
-      :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)">
-    <label class="text-sm" v-if="helperText">{{ helperText }}</label>
+      class="mt-1 p-3 font-mono bg-primary text-accent text-sm rounded border border-highlights drop-shadow-md block w-full transition focus:border-highlights focus:ring focus:ring-highlights focus:ring-opacity-30"
+      :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      spellcheck="false">
+
+    <label class="text-xs text-highlights" v-if="helperText">{{ helperText }}</label>
   </div>
 </template>

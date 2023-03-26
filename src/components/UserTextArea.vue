@@ -14,11 +14,13 @@ defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <div class="mt-2">
+  <div>
 
-    <label class="block font-semibold">{{ label }}</label>
-    <textarea rows="10"
-      class="mt-1 p-4 block font-mono w-full rounded border-gray-300 shadow-sm transition focus:border-sky-300 focus:ring focus:ring-sky-300 focus:ring-opacity-30"
-      :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"></textarea>
+    <label class="font-bold text-xl text-accent">{{ label }}</label>
+
+    <textarea rows="5"
+      class="mt-1 p-3 block font-mono text-accent text-sm w-full rounded border-highlights drop-shadow-md bg-primary transition focus:border-highlights focus:ring focus:ring-highlights focus:ring-opacity-30"
+      :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      spellcheck="false"></textarea>
   </div>
 </template>

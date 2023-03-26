@@ -7,6 +7,11 @@ const props = defineProps({
     required: true
   },
 
+  shopperResultURL: {
+    type: String,
+    required: true
+  },
+
   brandList: {
     type: Array,
     required: true
@@ -35,7 +40,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-10">
-    <form action="https://docs.oppwa.com/tutorials/integration-guide" class="paymentWidgets" :data-brands="brands"></form>
+  <div>
+    <form :action="shopperResultURL" class="paymentWidgets" :data-brands="brands"></form>
   </div>
 </template>

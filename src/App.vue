@@ -9,22 +9,28 @@ import UserInput from './components/UserInput.vue'
 import UserTextArea from './components/UserTextArea.vue'
 import SubmitButton from './components/SubmitButton.vue'
 import LaunchIcon from './components/icons/LaunchIcon.vue'
-import TrashIcon from './components/icons/TrashIcon.vue'
 import CnpWidget from './components/CnpWidget.vue'
 
 const checkoutId = ref('')
 const selectedBrands = ref(['VISA', 'MASTER']) // defaults to selecting these 2
 const brands = getBrandsList()
-const customJs = ref('')
+const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
+const customJs = ref("var wpwlOptions = { style: 'card' }")
 const isLaunchWidget = ref(false)
 
 /**
  * 
  */
 function sumbit() {
+
   if (checkoutId.value == '') {
     alert('Checkout ID cannot be empty!')
   } else {
+    // todo: add custom JS from the frontend
+    const customScript = document.createElement('script')
+    customScript.text = customJs.value
+    document.getElementById('codeGoesHere')!.appendChild(customScript)
+
     // todo: create script tag then append to head
     const scriptTag = document.createElement('script')
     scriptTag.setAttribute('id', 'widgy-boi')
@@ -36,49 +42,111 @@ function sumbit() {
   // eval
   isLaunchWidget.value = checkoutId.value !== '' ? true : false
 }
-
-function reset() {
-  isLaunchWidget.value = false
-}
 </script>
 
 <template>
   <HeroSection />
 
-  <section class="container mx-auto bg-white p-10 rounded-2xl shadow-lg">
-    <!-- get checkout ID from user -->
-    <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay." v-model="checkoutId" />
+  <div class="container mx-auto flex flex-row gap-5">
+    <div class="flex-initial flex-wrap">
+      <div class="mb-10 p-10 bg-secondary rounded-2xl drop-shadow-2xl flex flex-col gap-5">
+        <!-- get checkout ID from user -->
+        <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay" v-model="checkoutId" />
 
-    <!-- select brands here -->
-    <div class="mt-2">
-      <label class="block font-semibold">Brands</label>
-      <select
-        class="mt-1 p-5 block font-mono w-full rounded border-gray-300 shadow-sm transition focus:border-sky-300 focus:ring focus:ring-sky-300 focus:ring-opacity-30"
-        size="6" v-model="selectedBrands" multiple>
-        <option class="p-2 transition rounded-lg" v-for="card in brands.cards" :key="card">{{ card }}</option>
-        <option class="p-2 transition" v-for="bank in brands.bank" :key="bank">{{ bank }}</option>
-        <option class="p-2 transition" v-for="virtual in brands.virtual" :key="virtual">{{ virtual }}</option>
-      </select>
+        <!-- select brands here -->
+        <div>
+          <label class="font-bold text-xl text-accent">Brands</label>
+
+          <select
+            class="mt-1 p-3 block font-mono w-full rounded border-highlights bg-primary text-accent text-sm drop-shadow-md transition focus:border-highlights focus:ring focus:ring-highlights focus:ring-opacity-30"
+            size="3" v-model="selectedBrands" multiple>
+
+            <option class="px-4 py-1 transition rounded-md" v-for="card in brands.cards" :key="card">
+              {{ card }}
+            </option>
+
+            <option class="px-4 py-1 transition rounded-md" v-for="bank in brands.bank" :key="bank">
+              {{ bank }}
+            </option>
+
+            <option class="px-4 py-1 transition rounded-md" v-for="virtual in brands.virtual" :key="virtual">
+              {{ virtual }}
+            </option>
+          </select>
+        </div>
+
+        <TransitionGroup name="list" tag="div" class="flex flex-wrap">
+          <a class="px-6 py-1 mb-1 mr-1 bg-highlights text-primary rounded-2xl text-sm font-mono drop-shadow-md "
+            v-for="brand in selectedBrands" :key="brand">
+            {{ brand }}
+          </a>
+        </TransitionGroup>
+
+
+        <UserInput label="Shopper Result URL" helper-text="You will be redirected here after the transaction"
+          v-model="shopperResultURL" />
+
+
+        <UserTextArea label="Custom Javascript" v-model="customJs" />
+
+        <div class="bg-primary p-6 text-accent rounded-lg drop-shadow-md flex flex-row gap-3">
+
+          <div class="my-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-6 h-6 ">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+            </svg>
+          </div>
+
+          <div>
+            <h1 class="text-accent font-bold">Note</h1>
+            <p class="text-sm text-highlights">
+              This is a one-time setup only; if you wish to revise your customization, you need to <strong>reload</strong>
+              the
+              page.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="flex flex-row gap-2">
+          <SubmitButton btn-label="Launch the widgy boi!" @submit-data="sumbit">
+            <LaunchIcon />
+          </SubmitButton>
+        </div>
+
+
+        <div id="codeGoesHere">
+          <!-- insert script tag dynamically -->
+        </div>
+      </div>
     </div>
 
-    <div class="mt-4">
-      <a class="p-3 mr-1 bg-amber-100 rounded-2xl text-sm font-mono" v-for="brand in selectedBrands" :key="brand">
-        {{ brand }}
-      </a>
+    <div>
+      <CnpWidget :checkout-id="checkoutId" :brand-list="selectedBrands" :shopper-result-u-r-l="shopperResultURL"
+        v-if="isLaunchWidget" />
     </div>
-
-    <UserTextArea label="Javascript" v-model="customJs" />
-
-    <div class="flex flex-row gap-2">
-      <SubmitButton btn-label="Launch the Widgy!" @submit-data="sumbit">
-        <LaunchIcon />
-      </SubmitButton>
-
-      <SubmitButton btn-label="Yeet the Widgy!" @submit-data="reset">
-        <TrashIcon />
-      </SubmitButton>
-    </div>
-
-    <CnpWidget :checkout-id="checkoutId" :brand-list="selectedBrands" v-if="isLaunchWidget" />
-  </section>
+  </div>
 </template>
+
+<style scoped>
+.list-move,
+/* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+  position: absolute;
+}
+</style>
