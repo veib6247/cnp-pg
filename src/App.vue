@@ -87,10 +87,7 @@ const sumbit = () => {
         <UserInput label="Shopper Result URL" helper-text="You will be redirected here after the transaction"
           @key-enter-action="sumbit" v-model="shopperResultURL" />
 
-
         <UserTextArea label="Custom Javascript" @key-enter-action="sumbit" v-model="customJs" />
-
-
 
         <div class="flex flex-row gap-2">
           <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
@@ -110,9 +107,7 @@ const sumbit = () => {
               page.
             </p>
           </div>
-
         </div>
-
 
         <div id="codeGoesHere">
           <!-- insert script tag dynamically -->
