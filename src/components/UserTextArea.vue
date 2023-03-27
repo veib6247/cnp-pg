@@ -10,7 +10,7 @@ defineProps({
   }
 })
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue', 'keyEnterAction'])
 </script>
 
 <template>
@@ -20,7 +20,7 @@ defineEmits(['update:modelValue'])
 
     <textarea rows="5"
       class="mt-1 p-3 block font-mono text-accent text-sm w-full rounded border-highlights drop-shadow-md bg-primary transition focus:border-highlights focus:ring focus:ring-highlights focus:ring-opacity-30"
-      :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-      spellcheck="false"></textarea>
+      :value="modelValue" @keyup.ctrl.enter="$emit('keyEnterAction')"
+      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" spellcheck="false"></textarea>
   </div>
 </template>

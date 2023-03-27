@@ -9,6 +9,7 @@ import UserInput from './components/UserInput.vue'
 import UserTextArea from './components/UserTextArea.vue'
 import SubmitButton from './components/SubmitButton.vue'
 import LaunchIcon from './components/icons/LaunchIcon.vue'
+import InfoIcon from './components/icons/InfoIcon.vue'
 import CnpWidget from './components/CnpWidget.vue'
 
 const checkoutId = ref('')
@@ -21,8 +22,7 @@ const isLaunchWidget = ref(false)
 /**
  * 
  */
-function sumbit() {
-
+const sumbit = () => {
   if (checkoutId.value == '') {
     alert('Checkout ID cannot be empty!')
   } else {
@@ -51,7 +51,8 @@ function sumbit() {
     <div class="flex-initial flex-wrap">
       <div class="mb-10 p-10 bg-secondary rounded-2xl drop-shadow-2xl flex flex-col gap-5">
         <!-- get checkout ID from user -->
-        <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay" v-model="checkoutId" />
+        <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay"
+          @key-enter-action="sumbit" v-model="checkoutId" />
 
         <!-- select brands here -->
         <div>
@@ -84,21 +85,23 @@ function sumbit() {
 
 
         <UserInput label="Shopper Result URL" helper-text="You will be redirected here after the transaction"
-          v-model="shopperResultURL" />
+          @key-enter-action="sumbit" v-model="shopperResultURL" />
 
 
-        <UserTextArea label="Custom Javascript" v-model="customJs" />
+        <UserTextArea label="Custom Javascript" @key-enter-action="sumbit" v-model="customJs" />
 
-        <div class="bg-primary p-6 text-accent rounded-lg drop-shadow-md flex flex-row gap-3">
 
+
+        <div class="flex flex-row gap-2">
+          <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
+            <LaunchIcon />
+          </SubmitButton>
+        </div>
+
+        <div class="bg-primary p-4 text-accent rounded-lg drop-shadow-md flex flex-row gap-3">
           <div class="my-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-6 h-6 ">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-            </svg>
+            <InfoIcon />
           </div>
-
           <div>
             <h1 class="text-accent font-bold">Note</h1>
             <p class="text-sm text-highlights">
@@ -108,12 +111,6 @@ function sumbit() {
             </p>
           </div>
 
-        </div>
-
-        <div class="flex flex-row gap-2">
-          <SubmitButton btn-label="Launch the widgy boi!" @submit-data="sumbit">
-            <LaunchIcon />
-          </SubmitButton>
         </div>
 
 
