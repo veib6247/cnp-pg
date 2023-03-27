@@ -120,7 +120,7 @@ const sumbit = () => {
       </div>
     </div>
 
-    <div>
+    <div class="m-auto">
       <CnpWidget :checkout-id="checkoutId" :brand-list="selectedBrands" :shopper-result-u-r-l="shopperResultURL"
         v-if="isLaunchWidget" />
     </div>
