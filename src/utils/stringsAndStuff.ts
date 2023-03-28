@@ -179,3 +179,12 @@ export const getBrandsList = () => {
     ]
   }
 }
+
+/**
+ * this doesn't work inside the vue instance somehow
+ * @param checkoutId
+ * @returns string ver of the script tag for display purposes
+ */
+export const stringifyTag = (checkoutId: String) => {
+  return `<script src="https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${checkoutId}"></script>`
+}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
-import { getBrandsList } from './utils/stringsAndStuff'
+import { ref, computed } from 'vue'
+import { getBrandsList, stringifyTag } from './utils/stringsAndStuff'
 
 // components
 import HeroSection from './components/HeroSection.vue'
@@ -18,6 +18,23 @@ const brands = getBrandsList()
 const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
 const customJs = ref("var wpwlOptions = { style: 'card' }")
 const isLaunchWidget = ref(false)
+
+const stringifiedBrands = computed(() => {
+  let boi = ''
+
+  selectedBrands.value.forEach((brand) => {
+    boi += `${brand} `
+  })
+
+  return `<form action="${shopperResultURL.value}" class="paymentWidgets" data-brands="${boi}"></form>`
+})
+
+/**
+ * 
+ */
+const stringifiedScript = computed(() => {
+  return stringifyTag(checkoutId.value)
+})
 
 /**
  * 
@@ -54,6 +71,7 @@ const sumbit = () => {
         <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay"
           @key-enter-action="sumbit" v-model="checkoutId" />
 
+
         <!-- select brands here -->
         <div>
           <label class="font-bold text-xl text-accent">Brands</label>
@@ -74,6 +92,7 @@ const sumbit = () => {
               {{ virtual }}
             </option>
           </select>
+
         </div>
 
         <TransitionGroup name="list" tag="div" class="flex flex-wrap">
@@ -89,6 +108,20 @@ const sumbit = () => {
 
         <UserTextArea label="Custom Javascript" @key-enter-action="sumbit" v-model="customJs" />
 
+        <div class="bg-primary p-4 text-accent rounded-lg drop-shadow-md">
+          <h1 class="text-accent font-bold">HTML Elements</h1>
+          <p class="text-sm">
+            You can paste these directly in your HTML document
+          </p>
+
+          <p>
+            <span class="text-xs font-mono">{{ stringifiedScript }}</span>
+            <br>
+            <span class="text-xs font-mono">{{ stringifiedBrands }}</span>
+          </p>
+
+        </div>
+
         <div class="flex flex-row gap-2">
           <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
             <LaunchIcon />
@@ -101,7 +134,7 @@ const sumbit = () => {
           </div>
           <div>
             <h1 class="text-accent font-bold">Note</h1>
-            <p class="text-sm text-highlights">
+            <p class="text-sm text-accent">
               This is a one-time setup only; if you wish to revise your customization, you need to <strong>reload</strong>
               the
               page.
