@@ -19,6 +19,9 @@ const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide
 const customJs = ref("var wpwlOptions = { style: 'card' }")
 const isLaunchWidget = ref(false)
 
+/**
+ * 
+ */
 const stringifiedBrands = computed(() => {
   let boi = ''
 
@@ -59,13 +62,20 @@ const sumbit = () => {
   // eval
   isLaunchWidget.value = checkoutId.value !== '' ? true : false
 }
+
+/**
+ * 
+ */
+const copyToClipboard = () => {
+  navigator.clipboard.writeText(`${stringifiedScript.value}\n${stringifiedBrands.value}`)
+}
 </script>
 
 <template>
   <HeroSection />
 
   <div class="container mx-auto flex flex-row gap-5">
-    <div class="flex-initial flex-wrap">
+    <div class="flex-initial">
       <div class="mb-10 p-10 bg-secondary rounded-2xl drop-shadow-2xl flex flex-col gap-5">
         <!-- get checkout ID from user -->
         <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay"
@@ -95,7 +105,7 @@ const sumbit = () => {
 
         </div>
 
-        <TransitionGroup name="list" tag="div" class="flex flex-wrap">
+        <TransitionGroup name="list" tag="div" class="flex w-96 flex-wrap">
           <a class="px-6 py-1 mb-1 mr-1 bg-highlights text-primary rounded-2xl text-sm font-mono drop-shadow-md "
             v-for="brand in selectedBrands" :key="brand">
             {{ brand }}
@@ -108,25 +118,28 @@ const sumbit = () => {
 
         <UserTextArea label="Custom Javascript" @key-enter-action="sumbit" v-model="customJs" />
 
-        <div class="bg-primary p-4 text-accent rounded-lg drop-shadow-md">
-          <h1 class="text-accent font-bold">HTML Elements</h1>
-          <p class="text-sm">
-            You can paste these directly in your HTML document
-          </p>
+        <div class="bg-primary p-4 text-accent rounded-lg drop-shadow-md flex flex-col gap-2">
+          <div>
+            <h1 class="text-accent font-bold">HTML Elements</h1>
+            <p class="text-sm">
+              You can paste these directly in your HTML document
+            </p>
+          </div>
 
-          <p>
-            <span class="text-xs font-mono">{{ stringifiedScript }}</span>
+          <div class="bg-slate-900 rounded-md p-3 text-highlights w-fit">
+            <span class="text-xs font-mono" :class="{ 'text-red-400': !checkoutId }">{{ stringifiedScript }}</span>
             <br>
-            <span class="text-xs font-mono">{{ stringifiedBrands }}</span>
-          </p>
+            <span class="text-xs font-mono" :class="{ 'text-red-400': selectedBrands.length < 1 }">{{
+              stringifiedBrands
+            }}</span>
+          </div>
 
+          <SubmitButton btn-label="Copy" @submit-data="copyToClipboard"></SubmitButton>
         </div>
 
-        <div class="flex flex-row gap-2">
-          <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
-            <LaunchIcon />
-          </SubmitButton>
-        </div>
+        <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
+          <LaunchIcon />
+        </SubmitButton>
 
         <div class="bg-primary p-4 text-accent rounded-lg drop-shadow-md flex flex-row gap-3">
           <div class="my-auto">
