@@ -1,12 +1,12 @@
 <script setup lang="ts">
-defineProps({
-  btnLabel: {
-    type: String,
-    required: true
-  }
-})
+  defineProps({
+    btnLabel: {
+      type: String,
+      required: false
+    }
+  })
 
-defineEmits(['submitData'])
+  defineEmits(['submitData'])
 </script>
 
 <template>

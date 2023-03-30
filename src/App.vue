@@ -1,74 +1,80 @@
 <script setup lang="ts">
-// imports
-import { ref, computed } from 'vue'
-import { getBrandsList, stringifyTag } from './utils/stringsAndStuff'
+  // imports
+  import { ref, computed } from 'vue'
+  import { getBrandsList, stringifyTag } from './utils/stringsAndStuff'
 
-// components
-import HeroSection from './components/HeroSection.vue'
-import UserInput from './components/UserInput.vue'
-import UserTextArea from './components/UserTextArea.vue'
-import SubmitButton from './components/SubmitButton.vue'
-import LaunchIcon from './components/icons/LaunchIcon.vue'
-import InfoIcon from './components/icons/InfoIcon.vue'
-import CnpWidget from './components/CnpWidget.vue'
+  // components
+  import HeroSection from './components/HeroSection.vue'
+  import UserInput from './components/UserInput.vue'
+  import UserTextArea from './components/UserTextArea.vue'
+  import SubmitButton from './components/SubmitButton.vue'
+  import CnpWidget from './components/CnpWidget.vue'
 
-const checkoutId = ref('')
-const selectedBrands = ref(['VISA', 'MASTER']) // defaults to selecting these 2
-const brands = getBrandsList()
-const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
-const customJs = ref("var wpwlOptions = { style: 'card' }")
-const isLaunchWidget = ref(false)
+  // icons
+  import LaunchIcon from './components/icons/LaunchIcon.vue'
+  import InfoIcon from './components/icons/InfoIcon.vue'
+  import CopyIcon from './components/icons/CopyIcon.vue'
 
-/**
- * 
- */
-const stringifiedBrands = computed(() => {
-  let boi = ''
+  /**
+   * all vars
+   */
+  const checkoutId = ref('')
+  const selectedBrands = ref(['VISA', 'MASTER']) // defaults to selecting these 2
+  const brands = getBrandsList()
+  const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
+  const customJs = ref("var wpwlOptions = { style: 'card' }")
+  const isLaunchWidget = ref(false)
 
-  selectedBrands.value.forEach((brand) => {
-    boi += `${brand} `
+  /**
+   * 
+   */
+  const stringifiedBrands = computed(() => {
+    let boi = ''
+
+    selectedBrands.value.forEach((brand) => {
+      boi += `${brand} `
+    })
+
+    return `<form action="${shopperResultURL.value}" class="paymentWidgets" data-brands="${boi}"></form>`
   })
 
-  return `<form action="${shopperResultURL.value}" class="paymentWidgets" data-brands="${boi}"></form>`
-})
+  /**
+   * 
+   */
+  const stringifiedScript = computed(() => {
+    return stringifyTag(checkoutId.value)
+  })
 
-/**
- * 
- */
-const stringifiedScript = computed(() => {
-  return stringifyTag(checkoutId.value)
-})
+  /**
+   * 
+   */
+  const sumbit = () => {
+    if (checkoutId.value == '') {
+      alert('Checkout ID cannot be empty!')
+    } else {
+      // todo: add custom JS from the frontend
+      const customScript = document.createElement('script')
+      customScript.text = customJs.value
+      document.getElementById('codeGoesHere')!.appendChild(customScript)
 
-/**
- * 
- */
-const sumbit = () => {
-  if (checkoutId.value == '') {
-    alert('Checkout ID cannot be empty!')
-  } else {
-    // todo: add custom JS from the frontend
-    const customScript = document.createElement('script')
-    customScript.text = customJs.value
-    document.getElementById('codeGoesHere')!.appendChild(customScript)
+      // todo: create script tag then append to head
+      const scriptTag = document.createElement('script')
+      scriptTag.setAttribute('id', 'widgy-boi')
+      scriptTag.setAttribute('src', `https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${checkoutId.value}`)
 
-    // todo: create script tag then append to head
-    const scriptTag = document.createElement('script')
-    scriptTag.setAttribute('id', 'widgy-boi')
-    scriptTag.setAttribute('src', `https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${checkoutId.value}`)
+      document.head.append(scriptTag)
+    }
 
-    document.head.append(scriptTag)
+    // eval
+    isLaunchWidget.value = checkoutId.value !== '' ? true : false
   }
 
-  // eval
-  isLaunchWidget.value = checkoutId.value !== '' ? true : false
-}
-
-/**
- * 
- */
-const copyToClipboard = () => {
-  navigator.clipboard.writeText(`${stringifiedScript.value}\n${stringifiedBrands.value}`)
-}
+  /**
+   * 
+   */
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(`${stringifiedScript.value}\n${stringifiedBrands.value}`)
+  }
 </script>
 
 <template>
@@ -129,12 +135,17 @@ const copyToClipboard = () => {
           <div class="bg-slate-900 rounded-md p-3 text-highlights w-fit">
             <span class="text-xs font-mono" :class="{ 'text-red-400': !checkoutId }">{{ stringifiedScript }}</span>
             <br>
-            <span class="text-xs font-mono" :class="{ 'text-red-400': selectedBrands.length < 1 }">{{
-              stringifiedBrands
-            }}</span>
+            <span class="text-xs font-mono" :class="{ 'text-red-400': selectedBrands.length < 1 }">
+              {{ stringifiedBrands }}
+            </span>
           </div>
 
-          <SubmitButton btn-label="Copy" @submit-data="copyToClipboard"></SubmitButton>
+          <div class="flex flex-row-reverse">
+            <SubmitButton @submit-data="copyToClipboard">
+              <CopyIcon />
+            </SubmitButton>
+          </div>
+
         </div>
 
         <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
