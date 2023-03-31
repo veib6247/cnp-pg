@@ -22,7 +22,7 @@
   const selectedBrands = ref(['VISA', 'MASTER']) // defaults to selecting these 2
   const brands = getBrandsList()
   const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
-  const customJs = ref("var wpwlOptions = { style: 'card' }")
+  const customJs = ref("var wpwlOptions = {\n  style: 'card',\n  brandDetection: true,\n  brandDetectionType: 'binlist',\n}")
   const isLaunchWidget = ref(false)
 
   /**
