@@ -82,7 +82,7 @@
 
   <div class="container mx-auto flex flex-row gap-5">
     <div class="flex-initial">
-      <div class="mb-10 p-10 bg-secondary rounded-2xl drop-shadow-2xl flex flex-col gap-5">
+      <div class="mb-10 p-10 bg-gray-800 rounded-2xl drop-shadow-2xl flex flex-col gap-5">
         <!-- get checkout ID from user -->
         <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay"
           @key-enter-action="sumbit" v-model="checkoutId" />
@@ -90,10 +90,10 @@
 
         <!-- select brands here -->
         <div>
-          <label class="font-bold text-xl text-accent">Brands</label>
+          <label class="font-bold text-xl text-amber-400">Brands</label>
 
           <select
-            class="mt-1 p-3 block font-mono w-full rounded border-highlights bg-primary text-accent text-sm drop-shadow-md transition focus:border-highlights focus:ring focus:ring-highlights focus:ring-opacity-30"
+            class="mt-1 p-3 block font-mono w-full rounded border-highlights bg-gray-800 text-slate-300 text-sm drop-shadow-md transition focus:border-highlights focus:ring focus:ring-highlights focus:ring-opacity-30"
             size="3" v-model="selectedBrands" multiple>
 
             <option class="px-4 py-1 transition rounded-md" v-for="card in brands.cards" :key="card">
@@ -112,7 +112,7 @@
         </div>
 
         <TransitionGroup name="list" tag="div" class="flex w-96 flex-wrap">
-          <a class="px-6 py-1 mb-1 mr-1 bg-highlights text-primary rounded-2xl text-sm font-mono drop-shadow-md "
+          <a class="px-6 py-1 mb-1 mr-1 bg-amber-600 text-slate-300 rounded-2xl text-sm font-mono drop-shadow-md "
             v-for="brand in selectedBrands" :key="brand">
             {{ brand }}
           </a>
@@ -124,15 +124,15 @@
 
         <UserTextArea label="Custom Javascript" @key-enter-action="sumbit" v-model="customJs" />
 
-        <div class="bg-primary p-4 text-accent rounded-lg drop-shadow-md flex flex-col gap-2">
+        <div class="flex flex-col gap-2">
           <div>
-            <h1 class="text-accent font-bold">HTML Elements</h1>
-            <p class="text-sm">
+            <h1 class="text-amber-400 text-xl font-bold">HTML Elements</h1>
+            <p class="text-sm text-amber-500">
               You can paste these directly in your HTML document
             </p>
           </div>
 
-          <div class="bg-slate-900 rounded-md p-3 text-highlights w-fit">
+          <div class="bg-black rounded-md p-3 text-slate-300 w-fit">
             <span class="text-xs font-mono" :class="{ 'text-red-400': !checkoutId }">{{ stringifiedScript }}</span>
             <br>
             <span class="text-xs font-mono" :class="{ 'text-red-400': selectedBrands.length < 1 }">
@@ -140,31 +140,31 @@
             </span>
           </div>
 
-          <div class="flex flex-row-reverse">
+          <div class="flex">
             <SubmitButton @submit-data="copyToClipboard">
               <CopyIcon />
             </SubmitButton>
           </div>
-
         </div>
 
-        <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
-          <LaunchIcon />
-        </SubmitButton>
-
-        <div class="bg-primary p-4 text-accent rounded-lg drop-shadow-md flex flex-row gap-3">
+        <div class="bg-gray-900 p-4 text-slate-300 rounded-lg drop-shadow-md flex flex-row gap-3">
           <div class="my-auto">
             <InfoIcon />
           </div>
           <div>
-            <h1 class="text-accent font-bold">Note</h1>
-            <p class="text-sm text-accent">
+            <h1 class="text-slate-300 font-bold">Note</h1>
+            <p class="text-sm text-slate-300">
               This is a one-time setup only; if you wish to revise your customization, you need to <strong>reload</strong>
               the
               page.
             </p>
           </div>
         </div>
+
+
+        <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
+          <LaunchIcon />
+        </SubmitButton>
 
         <div id="codeGoesHere">
           <!-- insert script tag dynamically -->
