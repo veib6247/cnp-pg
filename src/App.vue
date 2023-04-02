@@ -91,10 +91,9 @@
         <!-- select brands here -->
         <div>
           <label class="font-bold text-xl text-amber-400">Brands</label>
-
           <select
-            class="mt-1 p-3 block font-mono w-full rounded border-highlights bg-gray-800 text-slate-300 text-sm drop-shadow-md transition focus:border-highlights focus:ring focus:ring-highlights focus:ring-opacity-30"
-            size="3" v-model="selectedBrands" multiple>
+            class="mt-1 p-3 block font-mono cursor-pointer w-full rounded border-none bg-slate-700 text-slate-300 text-sm drop-shadow-md transition focus:ring focus:ring-amber-300 focus:ring-opacity-30"
+            size="4" v-model="selectedBrands" multiple>
 
             <option class="px-4 py-1 transition rounded-md" v-for="card in brands.cards" :key="card">
               {{ card }}
@@ -108,16 +107,8 @@
               {{ virtual }}
             </option>
           </select>
-
+          <label class="text-xs text-slate-400">This will be added in the data-brands attribute of the form</label>
         </div>
-
-        <TransitionGroup name="list" tag="div" class="flex w-96 flex-wrap">
-          <a class="px-6 py-1 mb-1 mr-1 bg-amber-600 text-slate-300 rounded-2xl text-sm font-mono drop-shadow-md "
-            v-for="brand in selectedBrands" :key="brand">
-            {{ brand }}
-          </a>
-        </TransitionGroup>
-
 
         <UserInput label="Shopper Result URL" helper-text="You will be redirected here after the transaction"
           @key-enter-action="sumbit" v-model="shopperResultURL" />
@@ -127,23 +118,26 @@
         <div class="flex flex-col gap-2">
           <div>
             <h1 class="text-amber-400 text-xl font-bold">HTML Elements</h1>
-            <p class="text-sm text-amber-500">
-              You can paste these directly in your HTML document
-            </p>
           </div>
 
-          <div class="bg-black rounded-md p-3 text-slate-300 w-fit">
-            <span class="text-xs font-mono" :class="{ 'text-red-400': !checkoutId }">{{ stringifiedScript }}</span>
-            <br>
-            <span class="text-xs font-mono" :class="{ 'text-red-400': selectedBrands.length < 1 }">
-              {{ stringifiedBrands }}
-            </span>
-          </div>
-
-          <div class="flex">
-            <SubmitButton @submit-data="copyToClipboard">
+          <div class="relative">
+            <!-- alwyas sticks to the top-right of this div -->
+            <button
+              class="p-1 rounded bg-gray-900 text-white absolute top-2 right-2 transition hover:bg-gray-800 active:scale-95"
+              @click="copyToClipboard">
               <CopyIcon />
-            </SubmitButton>
+            </button>
+
+            <div class="bg-black rounded-md p-5 text-slate-300">
+              <span class="text-xs font-mono" :class="{ 'text-red-400': !checkoutId }">{{ stringifiedScript }}</span>
+              <br>
+              <span class="text-xs font-mono" :class="{ 'text-red-400': selectedBrands.length < 1 }">
+                {{ stringifiedBrands }}
+              </span>
+            </div>
+            <label class="text-xs text-slate-400">
+              You can paste these directly in your HTML document
+            </label>
           </div>
         </div>
 

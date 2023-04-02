@@ -20,9 +20,9 @@
     <label class="font-bold text-xl text-amber-400">{{ label }}</label>
 
     <textarea rows="5"
-      class="mt-1 p-3 block font-mono text-slate-300 text-xs w-full rounded border-highlights drop-shadow-md bg-black transition focus:border-highlights focus:ring focus:ring-highlights focus:ring-opacity-30"
+      class="mt-1 p-3 block bg-slate-700 font-mono text-slate-300 caret-amber-400 text-xs w-full rounded border-none drop-shadow-md transition focus:ring focus:ring-amber-300 focus:ring-opacity-30"
       :value="modelValue" @keyup.ctrl.enter="$emit('keyEnterAction')"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" spellcheck="false">
-              </textarea>
+                              </textarea>
   </div>
 </template>
