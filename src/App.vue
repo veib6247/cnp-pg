@@ -82,7 +82,7 @@
 
   <div class="container mx-auto flex flex-row gap-5">
     <div class="flex-initial">
-      <div class="mb-10 p-10 bg-gray-800 rounded-2xl drop-shadow-2xl flex flex-col gap-5">
+      <div class="mb-10 p-10 bg-slate-800 rounded-2xl drop-shadow-2xl flex flex-col gap-5">
         <!-- get checkout ID from user -->
         <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay"
           @key-enter-action="sumbit" v-model="checkoutId" />
