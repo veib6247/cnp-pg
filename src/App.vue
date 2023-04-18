@@ -22,20 +22,14 @@
   const selectedBrands = ref(['VISA', 'MASTER']) // defaults to selecting these 2
   const brands = getBrandsList()
   const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
-  const customJs = ref("var wpwlOptions = {\n  style: 'card',\n  brandDetection: true,\n  brandDetectionType: 'binlist',\n}")
+  const customJs = ref("var wpwlOptions = {\n  style: 'plain',\n  brandDetection: true,\n  brandDetectionType: 'binlist',\n}")
   const isLaunchWidget = ref(false)
 
   /**
-   * 
+   * returns the form tag with the brand list already joined by a space
    */
   const stringifiedBrands = computed(() => {
-    let boi = ''
-
-    selectedBrands.value.forEach((brand) => {
-      boi += `${brand} `
-    })
-
-    return `<form action="${shopperResultURL.value}" class="paymentWidgets" data-brands="${boi}"></form>`
+    return `<form action="${shopperResultURL.value}" class="paymentWidgets" data-brands="${selectedBrands.value.join(' ')}"></form>`
   })
 
   /**
