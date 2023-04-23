@@ -1,10 +1,9 @@
 <script setup lang="ts">
-  // imports
-  import { ref, computed } from 'vue'
+  // lib imports
+  import { ref, computed, onMounted } from 'vue'
   import { getBrandsList, stringifyTag } from './utils/stringsAndStuff'
 
   // components
-  import HeroSection from './components/HeroSection.vue'
   import UserInput from './components/UserInput.vue'
   import UserTextArea from './components/UserTextArea.vue'
   import SubmitButton from './components/SubmitButton.vue'
@@ -19,12 +18,41 @@
    * all vars
    */
   const checkoutId = ref('')
+  const isInputError = ref(false)
   const selectedBrands = ref(['VISA', 'MASTER']) // defaults to selecting these 2
   const brands = getBrandsList()
   const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
-  const customJs = ref("var wpwlOptions = {\n  style: 'plain',\n  brandDetection: true,\n  brandDetectionType: 'binlist',\n}")
-  const isLaunchWidget = ref(false)
+  const widgyOpts = {
+    style: 'plain',
+    showLabels: true,
+    labels: {
+      brand: 'Card Scheme',
+      cardHolder: 'Holder',
+      cardNumber: 'Number',
+      expiryDate: 'Expiry',
+      cvv: 'CVV 2',
+      submit: 'Submit',
+    },
+    showPlaceholders: false,
+    brandDetection: true,
+    brandDetectionType: 'binlist',
+    maskCvv: true,
+    showCVVHint: true,
+    spinner: {
+      lines: 20,
+      length: 0,
+      width: 12,
+      radius: 45,
+      scale: 1.85,
+      corners: 1,
+      speed: 2.2,
+      rotate: 0,
+      color: 'pink',
+    },
+  }
 
+  const customJs = ref('')
+  const isLaunchWidget = ref(false)
   /**
    * returns the form tag with the brand list already joined by a space
    */
@@ -44,9 +72,11 @@
    */
   const sumbit = () => {
     if (checkoutId.value == '') {
-      alert('Checkout ID cannot be empty!')
+      isInputError.value = true
+      const element = document.getElementById('checkoutID')
+      element?.scrollIntoView()
     } else {
-      // todo: add custom JS from the frontend
+      isInputError.value = false
       const customScript = document.createElement('script')
       customScript.text = customJs.value
       document.getElementById('codeGoesHere')!.appendChild(customScript)
@@ -69,98 +99,114 @@
   const copyToClipboard = () => {
     navigator.clipboard.writeText(`${stringifiedScript.value}\n${stringifiedBrands.value}`)
   }
+
+  /**
+   * format the array and put it as the default value on the textarea
+   */
+  onMounted(() => {
+    customJs.value = `var wpwlOptions = ${JSON.stringify(widgyOpts, null, 2)}`
+  })
 </script>
 
 <template>
-  <HeroSection />
+  <div class="container mx-auto my-5 font-base flex flex-row gap-3">
+    <!-- left column -->
+    <div
+      class="shrink-0 max-w-5xl py-12 px-10 bg-gray-50 border border-stone-300 rounded-2xl drop-shadow-sm flex flex-col gap-6">
 
-  <div class="container mx-auto flex flex-row gap-5">
-    <div class="flex-initial">
-      <div class="mb-10 p-10 bg-slate-800 rounded-2xl drop-shadow-2xl flex flex-col gap-5">
-        <!-- get checkout ID from user -->
-        <UserInput label="Checkout ID" helper-text="This is taken from the step 1 of CopyandPay"
-          @key-enter-action="sumbit" v-model="checkoutId" />
+      <!-- get checkout ID from user -->
+      <UserInput id="checkoutID" label="Checkout ID" :is-error="isInputError"
+        placeholder-text="e.g. 83DDC7947E3BBF205E1F6A5A3F992384.uat01-vm-tx01"
+        helper-text="This is taken from the step 1 of CopyandPay" @key-enter-action="sumbit" v-model="checkoutId" />
 
+      <!-- select brands here -->
+      <div>
+        <label class="font-bold text-xl text-gray-700">Brands</label>
+        <select
+          class="mt-1 p-3 block font-mono text-xs accent-pink-300 cursor-pointer w-1/2 rounded-lg border-none bg-slate-200 text-slate-800 transition focus:ring focus:ring-indigo-300 focus:ring-opacity-30"
+          size="4" v-model="selectedBrands" multiple>
 
-        <!-- select brands here -->
+          <option class="px-4 py-1 transition rounded-md" v-for="card in brands.cards" :key="card">
+            {{ card }}
+          </option>
+
+          <option class="px-4 py-1 transition rounded-md" v-for="bank in brands.bank" :key="bank">
+            {{ bank }}
+          </option>
+
+          <option class="px-4 py-1 transition rounded-md" v-for="virtual in brands.virtual" :key="virtual">
+            {{ virtual }}
+          </option>
+        </select>
+        <label class="text-xs text-slate-500">This will be added in the <code>data-brands</code> attribute of the
+          form</label>
+      </div>
+
+      <!-- redirect URL here -->
+      <UserInput label="Shopper Result URL" placeholder-text="e.g. https://docs.oppwa.com/tutorials/integration-guide"
+        helper-text="You will be redirected here after the transaction" @key-enter-action="sumbit"
+        v-model="shopperResultURL" />
+
+      <!-- Custom JS here -->
+      <UserTextArea label="Javascript Object for Customization" @key-enter-action="sumbit" v-model="customJs" />
+
+      <!-- sample source here -->
+      <div class="flex flex-col gap-2">
         <div>
-          <label class="font-bold text-xl text-amber-400">Brands</label>
-          <select
-            class="mt-1 p-3 block font-mono cursor-pointer w-full rounded border-none bg-slate-700 text-slate-300 text-sm drop-shadow-md transition focus:ring focus:ring-amber-300 focus:ring-opacity-30"
-            size="4" v-model="selectedBrands" multiple>
-
-            <option class="px-4 py-1 transition rounded-md" v-for="card in brands.cards" :key="card">
-              {{ card }}
-            </option>
-
-            <option class="px-4 py-1 transition rounded-md" v-for="bank in brands.bank" :key="bank">
-              {{ bank }}
-            </option>
-
-            <option class="px-4 py-1 transition rounded-md" v-for="virtual in brands.virtual" :key="virtual">
-              {{ virtual }}
-            </option>
-          </select>
-          <label class="text-xs text-slate-400">This will be added in the data-brands attribute of the form</label>
+          <h1 class="text-gray-700 text-xl font-bold">HTML Elements</h1>
         </div>
 
-        <UserInput label="Shopper Result URL" helper-text="You will be redirected here after the transaction"
-          @key-enter-action="sumbit" v-model="shopperResultURL" />
+        <div class="relative">
+          <!-- alwyas sticks to the top-right of this div -->
+          <button
+            class="p-1 rounded bg-indigo-500 text-white absolute top-2 right-2 transition hover:bg-indigo-600 active:scale-95"
+            @click="copyToClipboard">
+            <CopyIcon />
+          </button>
 
-        <UserTextArea label="Custom Javascript" @key-enter-action="sumbit" v-model="customJs" />
-
-        <div class="flex flex-col gap-2">
-          <div>
-            <h1 class="text-amber-400 text-xl font-bold">HTML Elements</h1>
+          <div class="bg-gray-200 rounded-md p-5 text-slate-800">
+            <span class="text-xs font-mono" :class="{ 'text-red-500': !checkoutId }">{{ stringifiedScript }}</span>
+            <br>
+            <span class="text-xs font-mono" :class="{ 'text-red-500': selectedBrands.length < 1 }">
+              {{ stringifiedBrands }}
+            </span>
           </div>
-
-          <div class="relative">
-            <!-- alwyas sticks to the top-right of this div -->
-            <button
-              class="p-1 rounded bg-gray-900 text-white absolute top-2 right-2 transition hover:bg-gray-800 active:scale-95"
-              @click="copyToClipboard">
-              <CopyIcon />
-            </button>
-
-            <div class="bg-black rounded-md p-5 text-slate-300">
-              <span class="text-xs font-mono" :class="{ 'text-red-400': !checkoutId }">{{ stringifiedScript }}</span>
-              <br>
-              <span class="text-xs font-mono" :class="{ 'text-red-400': selectedBrands.length < 1 }">
-                {{ stringifiedBrands }}
-              </span>
-            </div>
-            <label class="text-xs text-slate-400">
-              You can paste these directly in your HTML document
-            </label>
-          </div>
+          <label class="text-xs text-slate-500">
+            You can paste these directly in your HTML document
+          </label>
         </div>
-
-        <div class="bg-gray-900 p-4 text-slate-300 rounded-lg drop-shadow-md flex flex-row gap-3">
-          <div class="my-auto">
-            <InfoIcon />
-          </div>
-          <div>
-            <h1 class="text-slate-300 font-bold">Note</h1>
-            <p class="text-sm text-slate-300">
-              This is a one-time setup only; if you wish to revise your customization, you need to <strong>reload</strong>
-              the
-              page.
-            </p>
-          </div>
-        </div>
+      </div>
 
 
-        <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
-          <LaunchIcon />
-        </SubmitButton>
 
-        <div id="codeGoesHere">
-          <!-- insert script tag dynamically -->
-        </div>
+      <!-- button -->
+      <SubmitButton btn-label="Launch the Widget" @submit-data="sumbit">
+        <LaunchIcon />
+      </SubmitButton>
+
+      <!-- insert script tag dynamically -->
+      <div id="codeGoesHere">
       </div>
     </div>
 
-    <div class="m-auto">
+    <!-- right column -->
+    <div class="m-auto flex flex-col gap-5">
+      <!-- notif here -->
+      <div class="bg-blue-400 p-4 rounded-lg w-full flex flex-row gap-3">
+        <div class="my-auto text-gray-800">
+          <InfoIcon />
+        </div>
+
+        <div>
+          <h1 class="text-gray-800 font-bold">Note</h1>
+          <p class="text-xs text-gray-800">
+            This is a one-time setup only; if you wish to revise your customization, you need to <strong>reload</strong>
+            the
+            page.
+          </p>
+        </div>
+      </div>
+
       <CnpWidget :checkout-id="checkoutId" :brand-list="selectedBrands" :shopper-result-u-r-l="shopperResultURL"
         v-if="isLaunchWidget" />
     </div>
