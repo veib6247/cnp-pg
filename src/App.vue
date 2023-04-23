@@ -19,9 +19,14 @@
    */
   const checkoutId = ref('')
   const isInputError = ref(false)
-  const selectedBrands = ref(['VISA', 'MASTER']) // defaults to selecting these 2
+
+  // defaults to selecting these 2
+  const selectedBrands = ref(['VISA', 'MASTER'])
+
   const brands = getBrandsList()
   const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
+
+  // based on wpwlOptions
   const widgyOpts = {
     style: 'plain',
     showLabels: true,
@@ -51,8 +56,10 @@
     },
   }
 
+  // to be populated on mount
   const customJs = ref('')
   const isLaunchWidget = ref(false)
+
   /**
    * returns the form tag with the brand list already joined by a space
    */
@@ -68,7 +75,7 @@
   })
 
   /**
-   * 
+   * let 'em rip
    */
   const sumbit = () => {
     if (checkoutId.value == '') {
