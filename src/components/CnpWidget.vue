@@ -19,16 +19,10 @@
   })
 
   /**
-   * format into string
+   * format list of brands into string
    */
   const brands = computed(() => {
-    let list = ''
-
-    props.brandList.forEach(brand => {
-      list += brand + ' '
-    })
-
-    return list
+    return props.brandList.join(' ')
   })
 
   /**
