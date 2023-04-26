@@ -216,6 +216,9 @@
 
       <CnpWidget :checkout-id="checkoutId" :brand-list="selectedBrands" :shopper-result-u-r-l="shopperResultURL"
         v-if="isLaunchWidget" />
+
+      <!--  -->
+      <iframe name="myCustomIframe"></iframe>
     </div>
   </div>
 </template>
