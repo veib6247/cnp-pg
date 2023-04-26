@@ -54,6 +54,8 @@
       rotate: 0,
       color: 'pink',
     },
+    paymentTarget: 'myCustomIframe',
+    shopperResultTarget: 'myCustomIframe'
   }
 
   // to be populated on mount
