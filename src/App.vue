@@ -219,8 +219,13 @@
       <CnpWidget :checkout-id="checkoutId" :brand-list="selectedBrands" :shopper-result-u-r-l="shopperResultURL"
         v-if="isLaunchWidget" />
 
-      <!--  -->
-      <iframe name="myCustomIframe"></iframe>
+      <div>
+        <span class="text-xs animate-pulse">
+          There is an iFrame here... somewhere...
+        </span>
+        <iframe class="border border-transparent rounded-lg transition hover:border-indigo-300"
+          name="myCustomIframe"></iframe>
+      </div>
     </div>
   </div>
 </template>
