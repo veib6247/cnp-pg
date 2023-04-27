@@ -173,7 +173,7 @@
             <CopyIcon />
           </button>
 
-          <div class="bg-gray-200 rounded-md p-5 text-slate-800">
+          <div class="bg-slate-200 rounded-md p-5 text-slate-800">
             <span class="text-xs font-mono" :class="{ 'text-red-500': !checkoutId }">{{ stringifiedScript }}</span>
             <br>
             <span class="text-xs font-mono" :class="{ 'text-red-500': selectedBrands.length < 1 }">
