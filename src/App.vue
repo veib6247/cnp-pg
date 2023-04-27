@@ -24,7 +24,7 @@
   const selectedBrands = ref(['VISA', 'MASTER'])
 
   const brands = getBrandsList()
-  const shopperResultURL = ref('https://docs.oppwa.com/tutorials/integration-guide')
+  const shopperResultURL = ref('https://www.youtube.com/embed/dQw4w9WgXcQ')
 
   // based on wpwlOptions
   const widgyOpts = {
@@ -223,8 +223,12 @@
         <span class="text-xs animate-pulse">
           There is an iFrame here... somewhere...
         </span>
-        <iframe class="border border-transparent rounded-lg transition hover:border-indigo-300"
-          name="myCustomIframe"></iframe>
+
+        <iframe
+          class="border border-transparent rounded-lg w-full transition duration-300 hover:shadow-lg hover:shadow-indigo-300/50"
+          name="myCustomIframe"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
       </div>
     </div>
   </div>
