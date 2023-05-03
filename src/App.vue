@@ -165,25 +165,24 @@
           <h1 class="text-gray-700 text-xl font-bold">HTML Elements</h1>
         </div>
 
-        <div class="relative">
+        <div class="p-3 bg-slate-200 rounded-md">
           <!-- alwyas sticks to the top-right of this div -->
-          <button
-            class="p-1 rounded bg-indigo-500 text-white absolute top-2 right-2 transition hover:bg-indigo-600 active:scale-95"
+          <button class="float-right p-2 rounded bg-indigo-500 text-white transition hover:bg-indigo-600 active:scale-95"
             @click="copyToClipboard">
             <CopyIcon />
           </button>
 
-          <div class="bg-slate-200 rounded-md p-5 text-slate-800">
+          <div class="text-slate-800 m-3">
             <span class="text-xs font-mono" :class="{ 'text-red-500': !checkoutId }">{{ stringifiedScript }}</span>
             <br>
             <span class="text-xs font-mono" :class="{ 'text-red-500': selectedBrands.length < 1 }">
               {{ stringifiedBrands }}
             </span>
           </div>
-          <label class="text-xs text-slate-500">
-            You can paste these directly in your HTML document
-          </label>
         </div>
+        <span class="text-xs text-slate-500">
+          You can paste these directly in your HTML document
+        </span>
       </div>
 
 
